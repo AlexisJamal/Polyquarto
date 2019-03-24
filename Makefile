@@ -1,4 +1,4 @@
-all: PolyQuarto.out deplaceObj
+all: createDir PolyQuarto.out deplaceObj
 
 #UNAME_S = $(shell uname)
 
@@ -41,6 +41,9 @@ clean:
 veryclean: clean
 	rm bin/*.out
 
+createDir:
+	mkdir -p obj
+	mkdir -p bin
 
 deplaceObj:
 	mv *.o obj
