@@ -1,19 +1,16 @@
 all: createDir PolyQuarto.out deplaceObj
 
-#UNAME_S = $(shell uname)
+UNAME_S = $(shell uname)
 
-#ifeq ($(UNAME_S),Darwin)
-#	DIR_SDL = -I/usr/local/include/SDL2
-#	LIBS_SDL = -lSDL2 -lSDL2_image
-#endif
+ifeq ($(UNAME_S),Darwin)
+	DIR_SDL = -I/usr/local/include/SDL2
+	LIBS_SDL = -lSDL2 -lSDL2_image
+endif
 
-#ifeq ($(UNAME_S), Linux)
-#	DIR_SDL = -I/usr/include/SDL2
-#	LIBS_SDL = -lSDL2 -lSDL2_image
-#endif
-
-DIR_SDL = -ISDL2
-LIBS_SDL = -lSDL2 -lSDL2_image
+ifeq ($(UNAME_S), Linux)
+	DIR_SDL = -I/usr/include/SDL2
+	LIBS_SDL = -lSDL2 -lSDL2_image
+endif
 
 
 PolyQuarto.out: main_sdl.o sdlJeu.o Jeu.o Jeton.o Grille.o
