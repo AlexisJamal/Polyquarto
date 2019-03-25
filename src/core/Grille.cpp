@@ -328,19 +328,169 @@ bool Grille::win4() {
 /*  ##
    ##  */
 bool Grille::win5() {
-	return false;
+	bool res = false;
+
+	//Place 1
+	// haut-gauche
+	if(lastPlayedX >= 1 && lastPlayedY >= 2) {
+		res = checkForme(0, -1, -1, -1, -1, -2);
+	}
+	// haut-droite
+	if(!res && lastPlayedX <= 1 && lastPlayedY >= 1) {
+		res = checkForme(1, 0, 1, -1, 2, -1);
+	}
+	// bas-droite
+	if(!res && lastPlayedX <= 2 && lastPlayedY <= 1) {
+		res = checkForme(0, 1, 1, 1, 1, 2);
+	}
+	// bas-gauche
+	if(!res && lastPlayedX >= 2 && lastPlayedY <= 2) {
+		res = checkForme(-1, 0, -1, 1, -2, 1);
+	}
+
+	//Place 2
+	// haut-gauche
+	if(!res && lastPlayedX >= 1 && lastPlayedY == 1 && lastPlayedY == 2) {
+		res = checkForme(0, 1, -1, 0, -1, -1);
+	}
+	// haut-droite
+	if(!res && lastPlayedX == 1 && lastPlayedX == 2 && lastPlayedY >= 1) {
+		res = checkForme(-1, 0, 0, -1, 1, -1);
+	}
+	// bas-droite
+	if(!res && lastPlayedX <= 2 && lastPlayedY == 1 && lastPlayedY == 2) {
+		res = checkForme(0, -1, 1, 0, 1, 1);
+	}
+	// bas-gauche
+	if(!res && lastPlayedX == 1 && lastPlayedX == 2 && lastPlayedY <= 2) {
+		res = checkForme(1, 0, 0, 1, -1, 1);
+	}
+
+	return res;
 }
 
 /*  #
    ###  */
 bool Grille::win6() {
-	return false;
+	bool res = false;
+
+	//Place 1
+	// haut-gauche
+	if(lastPlayedX == 1 && lastPlayedX == 2 && lastPlayedY <= 2) {
+		res = checkForme(0, 1, -1, 1, 1, 1);
+	}
+	// haut-droite
+	if(!res && lastPlayedX >= 1 && lastPlayedY == 1 && lastPlayedY == 2) {
+		res = checkForme(-1, 0, -1, -1, -1, 1);
+	}
+	// bas-droite
+	if(!res && lastPlayedX == 1 && lastPlayedX == 2 && lastPlayedY >= 1) {
+		res = checkForme(0, -1, 1, -1, -1, -1);
+	}
+	// bas-gauche
+	if(!res && lastPlayedX <= 2 && lastPlayedY == 1 && lastPlayedY == 2) {
+		res = checkForme(1, 0, 1, 1, 1, -1);
+	}
+
+	//Place 2
+	// haut-gauche
+	if(!res && lastPlayedX == 1 && lastPlayedX == 2 && lastPlayedY >= 1) {
+		res = checkForme(0, -1, -1, 0, 1, 0);
+	}
+	// haut-droite
+	if(!res && lastPlayedX <= 2 && lastPlayedY == 1 && lastPlayedY == 2) {
+		res = checkForme(1, 0, 0, -1, 0, 1);
+	}
+	// bas-droite
+	if(!res && lastPlayedX == 1 && lastPlayedX == 2 && lastPlayedY <= 2) {
+		res = checkForme(0, 1, 1, 0, -1, 0);
+	}
+	// bas-gauche
+	if(!res && lastPlayedX >= 1 && lastPlayedY == 1 && lastPlayedY == 2) {
+		res = checkForme(-1, 0, 0, 1, 0, -1);
+	}
+
+	//Place 3
+	// haut-gauche
+	if(!res && lastPlayedX <= 1 && lastPlayedY >= 1) {
+		res = checkForme(1, 0, 1, -1, 2, 0);
+	}
+	// haut-droite
+	if(!res && lastPlayedX <= 2 && lastPlayedY <= 1) {
+		res = checkForme(0, 1, 1, 1, 0, 2);
+	}
+	// bas-droite
+	if(!res && lastPlayedX >= 2 && lastPlayedY <= 2) {
+		res = checkForme(-1, 0, -1, 1, -2, 0);
+	}
+	// bas-gauche
+	if(!res && lastPlayedX >= 1 && lastPlayedY >= 2) {
+		res = checkForme(0, -1, -1, -1, 0, -2);
+	}
+
+	//Place 4
+	// haut-gauche
+	if(!res && lastPlayedX >= 2 && lastPlayedY >= 1) {
+		res = checkForme(-1, 0, -1, -1, -2, 0);
+	}
+	// haut-droite
+	if(!res && lastPlayedX <= 2 && lastPlayedY >= 2) {
+		res = checkForme(0, -1, 1, -1, 0, -2);
+	}
+	// bas-droite
+	if(!res && lastPlayedX <= 1 && lastPlayedY <= 2) {
+		res = checkForme(1, 0, 1, 1, 2, 0);
+	}
+	// bas-gauche
+	if(!res && lastPlayedX >= 1 && lastPlayedY <= 1) {
+		res = checkForme(0, 1, -1, 1, 0, -2);
+	}
+
+	return res;
 }
 
 /* ##
     ##  */
 bool Grille::win7() {
-	return false;
+	bool res = false;
+
+	//Place 1
+	// haut-gauche
+	if(lastPlayedX >= 2 && lastPlayedY >= 1) {
+		res = checkForme(-1, 0, -1, -1, -2, -1);
+	}
+	// haut-droite
+	if(!res && lastPlayedX <= 2 && lastPlayedY >= 2) {
+		res = checkForme(0, -1, 1, -1, 1, -2);
+	}
+	// bas-droite
+	if(!res && lastPlayedX <= 1 && lastPlayedY <= 2) {
+		res = checkForme(1, 0, 1, -1, 2, -1);
+	}
+	// bas-gauche
+	if(!res && lastPlayedX >= 1 && lastPlayedY <= 1) {
+		res = checkForme(0, 1, -1, 1, -1, 2);
+	}
+
+	//Place 2
+	// haut-gauche
+	if(!res && lastPlayedX == 1 && lastPlayedX == 2 && lastPlayedY >= 1) {
+		res = checkForme(1, 0, 0, -1, -1, -1);
+	}
+	// haut-droite
+	if(!res && lastPlayedX <= 2 && lastPlayedY == 1 && lastPlayedY == 2) {
+		res = checkForme(0, -1, 1, 0, 1, -1);
+	}
+	// bas-droite
+	if(!res && lastPlayedX == 1 && lastPlayedX == 2 && lastPlayedY <= 2) {
+		res = checkForme(-1, 0, 0, 1, 1, 1);
+	}
+	// bas-gauche
+	if(!res && lastPlayedX >= 1 && lastPlayedY == 1 && lastPlayedY == 2) {
+		res = checkForme(0, -1, -1, 0, -1, 1);
+	}
+
+	return res;
 }
 
 bool Grille::checkForme(int x1, int y1, int x2, int y2, int x3, int y3) {
