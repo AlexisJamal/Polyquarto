@@ -41,8 +41,11 @@ private :
     Image im_winSelect;
     Image im_win1;
     Image im_win2;
+    Image im_bar1;
+    Image im_bar2;
 
     Image jetons[16];
+    Image formes[7];
     Image im_select;
 
 public :

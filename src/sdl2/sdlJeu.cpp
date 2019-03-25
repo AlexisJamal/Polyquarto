@@ -103,7 +103,16 @@ sdlJeu::sdlJeu () {
     im_winSelect.loadFromFile("data/winSelect.jpg",renderer);
     im_win1.loadFromFile("data/win1.png",renderer);
     im_win2.loadFromFile("data/win2.png",renderer);
+    im_bar1.loadFromFile("data/bar1.jpg",renderer);
+    im_bar2.loadFromFile("data/bar2.jpg",renderer);
     im_select.loadFromFile("data/select.png",renderer);
+    formes[0].loadFromFile("data/forme1.png",renderer);
+    formes[1].loadFromFile("data/forme2.png",renderer);
+    formes[2].loadFromFile("data/forme3.png",renderer);
+    formes[3].loadFromFile("data/forme4.png",renderer);
+    formes[4].loadFromFile("data/forme5.png",renderer);
+    formes[5].loadFromFile("data/forme6.png",renderer);
+    formes[6].loadFromFile("data/forme7.png",renderer);
     jetons[0].loadFromFile("data/r1.png",renderer);
     jetons[1].loadFromFile("data/r2.png",renderer);
     jetons[2].loadFromFile("data/r3.png",renderer);
@@ -198,6 +207,13 @@ void sdlJeu::drawPlaying() {
             }
         }
     }
+    if(jeu.getJoueur() == 1) {
+        im_bar1.draw(renderer,400,0,400,100);
+    }
+    else {
+        im_bar2.draw(renderer,400,0,400,100);
+    }
+    formes[jeu.getWinningCondition() - 1].draw(renderer,400,0,100,100);
 }
 
 void sdlJeu::drawWon() {
@@ -340,19 +356,24 @@ void sdlJeu::eventPlaying(int mouseX, int mouseY) {
             SDL_RenderPresent(renderer);
         }
     }
-    else if(mouseX >= 400) {
+    else if(mouseX >= 400 && mouseY >= 100) {
         mouseToJetonIndex(mouseX, mouseY, index);
         if(jeu.selectJeton(index)) {
             sdlAff();
             SDL_RenderPresent(renderer);
         }
     }
+    else if(mouseX >= 690 && mouseX <= 775 && mouseY >= 35 && mouseY <= 70) {
+        jeu = Jeu();
+        sdlAff();
+        SDL_RenderPresent(renderer);
+    }
 }
 
 void sdlJeu::eventWon(int mouseX, int mouseY) {
     if(mouseX >= 535 && mouseX <= 655 && mouseY >= 345 && mouseY <= 380) {
         jeu = Jeu();
+        sdlAff();
+        SDL_RenderPresent(renderer);
     }
-    sdlAff();
-    SDL_RenderPresent(renderer);
 }
