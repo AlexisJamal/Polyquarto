@@ -185,9 +185,9 @@ void sdlJeu::drawPlaying() {
         j = jeu.getJeton(i);
         if(!j.getIsUsed()) {
             if(j.getIsSelected()) {
-                im_select.draw(renderer, 400 + (i%4) * 98, (i/4) * 98 , 100, 100);
+                im_select.draw(renderer, 400 + (i%4) * 98, 100 + (i/4) * 73 , 100, 75);
             }
-            jetons[getJetonImgIndex(j)].draw(renderer, 415 + (i%4) * 98, 15 + (i/4) * 98 , 70, 70);
+            jetons[getJetonImgIndex(j)].draw(renderer, 425 + (i%4) * 98, 115 + (i/4) * 73 , 50, 50);
         }
     }
     Grille grid = jeu.getGrid();
@@ -260,7 +260,7 @@ void sdlJeu::mouseToGrid(int mouseX, int mouseY, int &x, int &y) {
 
 void sdlJeu::mouseToJetonIndex(int mouseX, int mouseY, int &index) {
     int x = (mouseX - 400)/100;
-    int y = mouseY/100;
+    int y = (mouseY - 100)/75;
     index = 4 * y + x;
 }
 
