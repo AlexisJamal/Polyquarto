@@ -33,6 +33,3 @@ Répertoires:
 
 	obj
 		Contient les .o
-
-	SDL2
-		Librairie utilisée pour l'affichage
