@@ -6,7 +6,7 @@
 
 using namespace std;
 
-enum State {start, playing, won};
+enum State {start, playing, won, egalite};
 
 class Jeu {
 
@@ -18,6 +18,7 @@ private :
 	int winningCondition;
 	State state;
 	int joueur;
+	int countPose;
 
 public :
 

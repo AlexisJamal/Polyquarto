@@ -103,6 +103,7 @@ sdlJeu::sdlJeu () {
     im_winSelect.loadFromFile("data/winSelect.jpg",renderer);
     im_win1.loadFromFile("data/win1.png",renderer);
     im_win2.loadFromFile("data/win2.png",renderer);
+    im_egalite.loadFromFile("data/egalite.png",renderer);
     im_bar1.loadFromFile("data/bar1.jpg",renderer);
     im_bar2.loadFromFile("data/bar2.jpg",renderer);
     im_select.loadFromFile("data/select.png",renderer);
@@ -152,6 +153,9 @@ void sdlJeu::sdlAff () {
             break;
         case won:
             drawWon();
+            break;
+        case egalite:
+            drawEgalite();
             break;
     }
 
@@ -235,6 +239,18 @@ void sdlJeu::drawWon() {
         im_win2.draw(renderer,400,0,400,400);
     }
 }
+void sdlJeu::drawEgalite() {
+    im_fond.draw(renderer,0,0,800,400);
+    im_grille.draw(renderer,0,0,400,400);
+
+    Grille grid = jeu.getGrid();
+    for(int i = 0; i < 4; i++) {
+        for(int j = 0; j < 4; j++) {
+            jetons[getJetonImgIndex(grid.getJeton(i, j))].draw(renderer, 15 + i * 98, 15 + j * 98 , 70, 70);
+        }
+    }
+    im_egalite.draw(renderer,400,0,400,400);
+}
 
 int sdlJeu::getJetonImgIndex(Jeton j) {
     int res = 0;
@@ -304,6 +320,9 @@ void sdlJeu:: sdlBoucle () {
                             eventPlaying(mouseX, mouseY);
                             break;
                         case won:
+                            eventWon(mouseX, mouseY);
+                            break;
+                        case egalite:
                             eventWon(mouseX, mouseY);
                             break;
                     }

@@ -41,6 +41,7 @@ private :
     Image im_winSelect;
     Image im_win1;
     Image im_win2;
+    Image im_egalite;
     Image im_bar1;
     Image im_bar2;
 
@@ -60,6 +61,7 @@ public :
     void drawStart();
     void drawPlaying();
     void drawWon();
+    void drawEgalite();
     void eventStart(int mouseX, int mouseY);
     void eventPlaying(int mouseX, int mouseY);
     void eventWon(int mouseX, int mouseY);

@@ -22,6 +22,7 @@ Jeu::Jeu () {
 	jetonSelected = false;
 	grid = Grille();
 	joueur = 1;
+	countPose = 0;
 }
 
 Jeu::~Jeu() {
@@ -62,6 +63,10 @@ bool Jeu::poseJeton(int x, int y) {
 		joueur = joueur%2 + 1;
 		if(grid.hasWon(winningCondition)) {
 			state = won;
+		}
+		countPose++;
+		if(countPose == 16) {
+			state = egalite;
 		}
 	}
 
