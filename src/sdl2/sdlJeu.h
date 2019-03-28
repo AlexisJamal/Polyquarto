@@ -44,7 +44,11 @@ private :
     Image im_egalite;
     Image im_bar1;
     Image im_bar2;
+    Image im_barSolo1;
+    Image im_barSolo2;
     Image im_menu;
+    Image im_victoire;
+    Image im_defaite;
 
     Image jetons[16];
     Image formes[7];

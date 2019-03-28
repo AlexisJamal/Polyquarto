@@ -106,8 +106,12 @@ sdlJeu::sdlJeu () {
     im_egalite.loadFromFile("data/egalite.png",renderer);
     im_bar1.loadFromFile("data/bar1.jpg",renderer);
     im_bar2.loadFromFile("data/bar2.jpg",renderer);
+    im_barSolo1.loadFromFile("data/barSolo1.jpg",renderer);
+    im_barSolo2.loadFromFile("data/barSolo2.jpg",renderer);
     im_select.loadFromFile("data/select.png",renderer);
     im_menu.loadFromFile("data/menu.jpg",renderer);
+    im_victoire.loadFromFile("data/victoire.png",renderer);
+    im_defaite.loadFromFile("data/defaite.png",renderer);
     formes[0].loadFromFile("data/forme1.png",renderer);
     formes[1].loadFromFile("data/forme2.png",renderer);
     formes[2].loadFromFile("data/forme3.png",renderer);
@@ -220,10 +224,16 @@ void sdlJeu::drawPlaying() {
         }
     }
     if(jeu.getJoueur() == 1) {
-        im_bar1.draw(renderer,400,0,400,100);
+    	if(jeu.getMode() == solo) {
+    		im_barSolo1.draw(renderer,400,0,400,100);
+    	}
+        else im_bar1.draw(renderer,400,0,400,100);
     }
     else {
-        im_bar2.draw(renderer,400,0,400,100);
+        if(jeu.getMode() == solo) {
+    		im_barSolo2.draw(renderer,400,0,400,100);
+    	}
+        else im_bar2.draw(renderer,400,0,400,100);
     }
     formes[jeu.getWinningCondition() - 1].draw(renderer,400,0,100,100);
 }
@@ -241,10 +251,16 @@ void sdlJeu::drawWon() {
         }
     }
     if(jeu.getJoueur() == 1) {
-        im_win1.draw(renderer,400,0,400,400);
+    	if(jeu.getMode() == solo) {
+    		im_victoire.draw(renderer,400,0,400,400);
+    	}
+        else im_win1.draw(renderer,400,0,400,400);
     }
     else {
-        im_win2.draw(renderer,400,0,400,400);
+    	if(jeu.getMode() == solo) {
+			im_defaite.draw(renderer,400,0,400,400);
+    	}
+        else im_win2.draw(renderer,400,0,400,400);
     }
 }
 void sdlJeu::drawEgalite() {
@@ -393,32 +409,50 @@ void sdlJeu::eventStart(int mouseX, int mouseY) {
 
 void sdlJeu::eventPlaying(int mouseX, int mouseY) {
     int x, y, index;
-
-    if(jeu.getJetonSelected() && mouseX <= 400) {
-        mouseToGrid(mouseX, mouseY, x, y);
-        if(jeu.poseJeton(x, y)) {
-            sdlAff();
-            SDL_RenderPresent(renderer);
-            if(jeu.getMode() == solo) {
-                Ia::jouer(jeu);
-                sdlAff();
-                SDL_RenderPresent(renderer);
-            }
-        }
-    }
-    else if(mouseX >= 400 && mouseY >= 100) {
-        mouseToJetonIndex(mouseX, mouseY, index);
-        if(jeu.selectJeton(index)) {
-            sdlAff();
-            SDL_RenderPresent(renderer);
-            if(jeu.getMode() == solo) {
-                Ia::jouer(jeu);
-                sdlAff();
-                SDL_RenderPresent(renderer);
-            }
-        }
-    }
-    else if(mouseX >= 690 && mouseX <= 775 && mouseY >= 35 && mouseY <= 70) {
+    if(jeu.getMode() == solo) {
+    	if(jeu.getJoueur() == 1) {
+    		if(mouseX >= 400 && mouseY >= 100) {
+		        mouseToJetonIndex(mouseX, mouseY, index);
+		        if(jeu.selectJeton(index)) {
+		            sdlAff();
+		            SDL_RenderPresent(renderer);
+		            Ia::jouer(jeu);
+		            sdlAff();
+		            SDL_RenderPresent(renderer);
+		            Ia::jouer(jeu);
+		            sdlAff();
+		            SDL_RenderPresent(renderer);
+		        }
+		    }
+    	}
+    	else {
+    		if(jeu.getJetonSelected() && mouseX <= 400) {
+		        mouseToGrid(mouseX, mouseY, x, y);
+		        if(jeu.poseJeton(x, y)) {
+		            sdlAff();
+		            SDL_RenderPresent(renderer);
+		        }
+		    }
+    	}
+   	}
+   	else {
+   		if(jeu.getJetonSelected() && mouseX <= 400) {
+	        mouseToGrid(mouseX, mouseY, x, y);
+	        if(jeu.poseJeton(x, y)) {
+	            sdlAff();
+	            SDL_RenderPresent(renderer);
+	        }
+	    }
+	    else if(mouseX >= 400 && mouseY >= 100) {
+	        mouseToJetonIndex(mouseX, mouseY, index);
+	        if(jeu.selectJeton(index)) {
+	            sdlAff();
+	            SDL_RenderPresent(renderer);
+	        }
+	    }
+   	}
+    
+    if(mouseX >= 690 && mouseX <= 775 && mouseY >= 35 && mouseY <= 70) {
         jeu = Jeu();
         sdlAff();
         SDL_RenderPresent(renderer);
