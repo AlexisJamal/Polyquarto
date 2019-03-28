@@ -8,6 +8,8 @@ using namespace std;
 
 enum State {menu, start, playing, won, egalite};
 
+enum Mode {multi, solo};
+
 class Jeu {
 
 private :
@@ -17,6 +19,7 @@ private :
 	Grille grid;
 	int winningCondition;
 	State state;
+	Mode mode;
 	int joueur;
 	int countPose;
 
@@ -45,6 +48,10 @@ public :
 	State getState();
 
 	void setState(State s);
+
+	Mode getMode();
+
+	void setMode(Mode m);
 
 	int getJoueur();
 

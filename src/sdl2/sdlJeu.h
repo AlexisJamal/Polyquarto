@@ -4,8 +4,8 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-#include "../core/Jeton.h"
 #include "../core/Jeu.h"
+#include "../core/Ia.h"
 
 
 class Image {

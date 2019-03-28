@@ -345,6 +345,13 @@ void sdlJeu:: sdlBoucle () {
 
 void sdlJeu::eventMenu(int mouseX, int mouseY) {
     if(mouseX >= 310 && mouseX <= 480 && mouseY >= 170 && mouseY <= 210) {
+        jeu.setMode(multi);
+        jeu.setState(start);
+        sdlAff();
+        SDL_RenderPresent(renderer);
+    }
+    else if(mouseX >= 310 && mouseX <= 480 && mouseY >= 240 && mouseY <= 280) {
+        jeu.setMode(solo);
         jeu.setState(start);
         sdlAff();
         SDL_RenderPresent(renderer);
@@ -392,6 +399,11 @@ void sdlJeu::eventPlaying(int mouseX, int mouseY) {
         if(jeu.poseJeton(x, y)) {
             sdlAff();
             SDL_RenderPresent(renderer);
+            if(jeu.getMode() == solo) {
+                Ia::jouer(jeu);
+                sdlAff();
+                SDL_RenderPresent(renderer);
+            }
         }
     }
     else if(mouseX >= 400 && mouseY >= 100) {
@@ -399,6 +411,11 @@ void sdlJeu::eventPlaying(int mouseX, int mouseY) {
         if(jeu.selectJeton(index)) {
             sdlAff();
             SDL_RenderPresent(renderer);
+            if(jeu.getMode() == solo) {
+                Ia::jouer(jeu);
+                sdlAff();
+                SDL_RenderPresent(renderer);
+            }
         }
     }
     else if(mouseX >= 690 && mouseX <= 775 && mouseY >= 35 && mouseY <= 70) {

@@ -23,6 +23,7 @@ Jeu::Jeu () {
 	grid = Grille();
 	joueur = 1;
 	countPose = 0;
+	mode = multi;
 }
 
 Jeu::~Jeu() {
@@ -103,6 +104,14 @@ State Jeu::getState() {
 
 void Jeu::setState(State s) {
 	state = s;
+}
+
+Mode Jeu::getMode() {
+	return mode;
+}
+
+void Jeu::setMode(Mode m) {
+	mode = m;
 }
 
 int Jeu::getJoueur() {

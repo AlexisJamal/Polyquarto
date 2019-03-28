@@ -13,8 +13,8 @@ ifeq ($(UNAME_S), Linux)
 endif
 
 
-PolyQuarto.out: main_sdl.o sdlJeu.o Jeu.o Jeton.o Grille.o
-	g++ -g main_sdl.o sdlJeu.o Jeu.o Jeton.o Grille.o -o bin/PolyQuarto.out $(LIBS_SDL)
+PolyQuarto.out: main_sdl.o sdlJeu.o Jeu.o Jeton.o Grille.o Ia.o
+	g++ -g main_sdl.o sdlJeu.o Jeu.o Jeton.o Grille.o Ia.o -o bin/PolyQuarto.out $(LIBS_SDL)
 
 
 main_sdl.o: src/sdl2/sdlJeu.h src/sdl2/main_sdl.cpp
@@ -31,6 +31,9 @@ Jeton.o: src/core/Jeton.h src/core/Jeton.cpp
 
 Grille.o: src/core/Grille.h src/core/Grille.cpp
 	g++ -g -Wall -c src/core/Grille.cpp
+
+Ia.o: src/core/Ia.h src/core/Ia.cpp
+	g++ -g -Wall -c src/core/Ia.cpp
 
 clean:
 	rm obj/*.o
