@@ -7,7 +7,7 @@ Jeu::Jeu () {
 	
 	winningCondition = 1;
 
-	state = start;
+	state = menu;
 
 	Jeton tmp = Jeton();
 

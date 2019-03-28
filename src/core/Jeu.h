@@ -6,7 +6,7 @@
 
 using namespace std;
 
-enum State {start, playing, won, egalite};
+enum State {menu, start, playing, won, egalite};
 
 class Jeu {
 

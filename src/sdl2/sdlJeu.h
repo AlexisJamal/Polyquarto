@@ -44,6 +44,7 @@ private :
     Image im_egalite;
     Image im_bar1;
     Image im_bar2;
+    Image im_menu;
 
     Image jetons[16];
     Image formes[7];
@@ -58,10 +59,12 @@ public :
     void mouseToJetonIndex(int mouseX, int mouseY, int &index);
     void sdlBoucle();
     void sdlAff();
+    void drawMenu();
     void drawStart();
     void drawPlaying();
     void drawWon();
     void drawEgalite();
+    void eventMenu(int mouseX, int mouseY);
     void eventStart(int mouseX, int mouseY);
     void eventPlaying(int mouseX, int mouseY);
     void eventWon(int mouseX, int mouseY);

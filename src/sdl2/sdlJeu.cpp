@@ -107,6 +107,7 @@ sdlJeu::sdlJeu () {
     im_bar1.loadFromFile("data/bar1.jpg",renderer);
     im_bar2.loadFromFile("data/bar2.jpg",renderer);
     im_select.loadFromFile("data/select.png",renderer);
+    im_menu.loadFromFile("data/menu.jpg",renderer);
     formes[0].loadFromFile("data/forme1.png",renderer);
     formes[1].loadFromFile("data/forme2.png",renderer);
     formes[2].loadFromFile("data/forme3.png",renderer);
@@ -145,6 +146,9 @@ void sdlJeu::sdlAff () {
 	SDL_RenderClear(renderer);
 
     switch (jeu.getState()) {
+        case menu:
+            drawMenu();
+            break;
         case start:
             drawStart();
             break;
@@ -159,6 +163,10 @@ void sdlJeu::sdlAff () {
             break;
     }
 
+}
+
+void sdlJeu::drawMenu() {
+    im_menu.draw(renderer,0,0,800,400);
 }
 
 void sdlJeu::drawStart() {
@@ -313,6 +321,9 @@ void sdlJeu:: sdlBoucle () {
 				case SDL_MOUSEBUTTONDOWN:
                     SDL_GetMouseState(&mouseX, &mouseY);
                     switch (jeu.getState()) {
+                        case menu:
+                            eventMenu(mouseX, mouseY);
+                            break;
                         case start:
                             eventStart(mouseX, mouseY);
                             break;
@@ -330,6 +341,14 @@ void sdlJeu:: sdlBoucle () {
 			}
 		}
 	}
+}
+
+void sdlJeu::eventMenu(int mouseX, int mouseY) {
+    if(mouseX >= 310 && mouseX <= 480 && mouseY >= 170 && mouseY <= 210) {
+        jeu.setState(start);
+        sdlAff();
+        SDL_RenderPresent(renderer);
+    }
 }
 
 void sdlJeu::eventStart(int mouseX, int mouseY) {
