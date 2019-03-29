@@ -479,7 +479,7 @@ bool Grille::win7() {
 	}
 	// haut-droite
 	if(!res && lastPlayedX <= 2 && lastPlayedY == 1 && lastPlayedY == 2) {
-		res = checkForme(0, -1, 1, 0, 1, -1);
+		res = checkForme(0, -1, 1, 0, 1, 1);
 	}
 	// bas-droite
 	if(!res && lastPlayedX == 1 && lastPlayedX == 2 && lastPlayedY <= 2) {
