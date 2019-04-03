@@ -17,10 +17,14 @@ private :
 public :
 	
 	Grille();
+	Grille(Grille const & grille);
 	~Grille();
+	int getLastPlayedX() const;
+	int getLastPlayedY() const;
 	void setJeton(int x, int y, Jeton j);
-	Jeton getJeton(int x, int y);
-	bool getWin(int x, int y);
+	Jeton getJeton(int x, int y) const;
+	Jeton* getRefJeton(int x, int y);
+	bool getWin(int x, int y) const;
 	bool hasWon(int winningCondition);
 	bool win1();
 	bool win2();

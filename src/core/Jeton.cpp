@@ -21,25 +21,34 @@ Jeton::Jeton(bool u, bool s, bool r, bool c, bool h, bool b) {
 	isBig = b;
 }
 
+Jeton::Jeton(Jeton const & jeton) {
+	isUsed = jeton.getIsUsed();
+	isSelected = jeton.getIsSelected();
+	isRed = jeton.getIsRed();
+	isCircle = jeton.getIsCircle();
+	isHoled = jeton.getIsHoled();
+	isBig = jeton.getIsBig();
+}
+
 Jeton::~Jeton() {
 }
 
-bool Jeton::getIsUsed(){
+bool Jeton::getIsUsed() const{
 	return isUsed;
 }
-bool Jeton::getIsSelected(){
+bool Jeton::getIsSelected() const{
 	return isSelected;
 }
-bool Jeton::getIsRed(){
+bool Jeton::getIsRed() const{
 	return isRed;
 }
-bool Jeton::getIsCircle(){
+bool Jeton::getIsCircle() const{
 	return isCircle;
 }
-bool Jeton::getIsHoled(){
+bool Jeton::getIsHoled() const{
 	return isHoled;
 }
-bool Jeton::getIsBig(){
+bool Jeton::getIsBig() const{
 	return isBig;
 }
 
