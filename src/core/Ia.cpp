@@ -6,60 +6,41 @@
 using namespace std;
 
 int Ia::evaluation (Jeu & jeu){
-	int points;
+	int res = false;
+
 	Grille grid = jeu.getGrid();
-	int lastPlayedX = jeu.getGrid().getLastPlayedX();
-	int lastPlayedY = jeu.getGrid().getLastPlayedY();
-	switch (jeu.getWinningCondition()){
-		case 1: 
-		{
-			bool r = grid.getJeton(lastPlayedX,lastPlayedY).getIsRed();
-			bool c = grid.getJeton(lastPlayedX,lastPlayedY).getIsCircle();
-			bool h = grid.getJeton(lastPlayedX,lastPlayedY).getIsHoled();
-			bool b = grid.getJeton(lastPlayedX,lastPlayedY).getIsBig();
-			if (grid.hasWon(1)){
-				points = 100;
-			}
-			else{
-				for(int i = 1; i < 4; i++) {
-					if(grid.getJeton(i,lastPlayedY).getIsUsed() && grid.getJeton(i,lastPlayedY).getIsRed() == r) {
-						points++;
-					}
-						if(grid.getJeton(i,lastPlayedY).getIsUsed() && grid.getJeton(i,lastPlayedY).getIsCircle() == c) {
-						points++;
-					}
-					if(grid.getJeton(i,lastPlayedY).getIsUsed() && grid.getJeton(i,lastPlayedY).getIsHoled() == h) {
-						points++;
-					}
-					if(grid.getJeton(i,lastPlayedY).getIsUsed() && grid.getJeton(i,lastPlayedY).getIsBig() == b) {
-						points++;
-					}
-				}
-			// On vérifie la colonne
-				for(int j = 1; j < 4; j++) {
-					if(grid.getJeton(lastPlayedX,j).getIsUsed() && grid.getJeton(lastPlayedX,j).getIsRed() != r) {
-					points++;
-					}
-					if(grid.getJeton(lastPlayedX,j).getIsUsed() && grid.getJeton(lastPlayedX,j).getIsCircle() != c) {
-						points++;
-					}
-					if(grid.getJeton(lastPlayedX,j).getIsUsed() && grid.getJeton(lastPlayedX,j).getIsHoled() != h) {
-						points++;
-					}
-					if(grid.getJeton(lastPlayedX,j).getIsUsed() && grid.getJeton(lastPlayedX,j).getIsBig() != b) {
-						points++;
-					}
-				}
-			}
-			break;
+
+	if (grid.hasWon(1)){
+		res = 100;
+	}
+	else {
+		switch(jeu.getWinningCondition()) {
+			case 1: 
+				res = win1(grid);
+				break;
+			case 2: 
+				res = win2(grid);
+				break;
+			case 3: 
+				res = win3(grid);
+				break;
+			case 4: 
+				res = win4(grid);
+				break;
+			case 5: 
+				res = win5(grid);
+				break;
+			case 6: 
+				res = win6(grid);
+				break;
+			case 7: 
+				res = win7(grid);
+				break;
+			default: break;
 		}
-		default:
-		{
-			points = 2;
-			break;
-		}
-		}
-	return points;
+	}
+
+	return res;
 }
 
 int Ia::MinMax (Jeu & jeu , int profondeur, bool opposant){
@@ -73,20 +54,20 @@ int Ia::MinMax (Jeu & jeu , int profondeur, bool opposant){
 		int actu;
 		for(int k = 0; k< 16; k++){
 			if(jeutmp->selectJeton(k)){
-				std::cout<<"on choisit un jeton aleatoire(ia)"<<std::endl;
+				cout<<"on choisit un jeton aleatoire(ia)"<<std::endl;
 				for(int i = 0; i < 4; i++){
 					for(int j = 0; j<4; j++){
 						if (jeutmp->getGrid().getJeton(i,j).getIsUsed() == false){
 							jeutmp->poseJeton(i,j);
-							std::cout<<"on pose un jeton sur copie jeu(j)"<<std::endl;
+							cout<<"on pose un jeton sur copie jeu(j)"<<std::endl;
 							for(int m = 0; m< 16; m++){
 								if(jeutmp->selectJeton(m)){
 									std::cout<<"on choisit un jeton aleatoire(j)"<<std::endl;
 									actu = -MinMax(*jeutmp, profondeur-1, false);
-									std::cout<<"le minmax passe"<<std::endl;
+									cout<<"le minmax passe"<<std::endl;
 									if (valeur < actu){
 										valeur = actu;
-										std::cout<<"la valeur a été changée (j)"<<std::endl;
+										cout<<"la valeur a été changée (j)"<<std::endl;
 									}
 								}
 							}
@@ -104,11 +85,11 @@ int Ia::MinMax (Jeu & jeu , int profondeur, bool opposant){
 			for(int j = 0; j<4; j++){
 				if (jeutmp->getGrid().getJeton(i,j).getIsUsed() == false){
 					jeutmp->poseJeton(i,j);
-					std::cout<<"on pose un jeton sur copie jeu(ia)"<<std::endl;
+					cout<<"on pose un jeton sur copie jeu(ia)"<<std::endl;
 					actu = MinMax(*jeutmp, profondeur-1, true);
 					if (valeur < actu){
 						valeur = actu;
-						std::cout<<"la valeur a été changée (ia)"<<std::endl;
+						cout<<"la valeur a été changée (ia)"<<std::endl;
 					}
 				}
 			}
@@ -133,9 +114,9 @@ void Ia::jouer(Jeu & jeu) {
 			for(int j=0; j<4; j++){
 				if (jeutmp->getGrid().getJeton(i,j).getIsUsed() == false){
 					jeutmp->poseJeton(i,j);
-					std::cout<<"pose premier jeton"<<std::endl;
+					cout<<"pose premier jeton"<<std::endl;
 					actu = MinMax(*jeutmp,profondeur-1,true);
-					std::cout<<"premier minmax effectué"<<std::endl;
+					cout<<"premier minmax effectué"<<std::endl;
 					if (actu > maximum){
 						maximum=actu;
 						maxx=i;
@@ -146,7 +127,7 @@ void Ia::jouer(Jeu & jeu) {
 			}
 		}
 		jeu.poseJeton(maxx,maxy);
-		std::cout<<"Jeton posé sur la grille"<<std::endl;
+		cout<<"Jeton posé sur la grille"<<std::endl;
 	}
 	else{
 		for(int k = 0; k< 16; k++){
@@ -159,22 +140,457 @@ void Ia::jouer(Jeu & jeu) {
 		}
 		jeu.selectJeton(maxjet);
 	}
-	/*int x, y, i;
+	
+}
 
-	if(jeu.getJoueur() == 1) {
-		x = rand() % 4;
-		y = rand() % 4;
+//  ####
+int Ia::win1(Grille grid) {
+	int res = 0;
 
-		while(!jeu.poseJeton(x,y)) {
-			x = rand() % 4;
-			y = rand() % 4;
+	int lastPlayedX = grid.getLastPlayedX();
+	int lastPlayedY = grid.getLastPlayedY();
+
+	bool r = grid.getJeton(lastPlayedX,lastPlayedY).getIsRed();
+	bool c = grid.getJeton(lastPlayedX,lastPlayedY).getIsCircle();
+	bool h = grid.getJeton(lastPlayedX,lastPlayedY).getIsHoled();
+	bool b = grid.getJeton(lastPlayedX,lastPlayedY).getIsBig();
+
+	for(int i = 1; i < 4; i++) {
+		if(grid.getJeton(i,lastPlayedY).getIsUsed() && grid.getJeton(i,lastPlayedY).getIsRed() == r) {
+			res++;
+		}
+			if(grid.getJeton(i,lastPlayedY).getIsUsed() && grid.getJeton(i,lastPlayedY).getIsCircle() == c) {
+			res++;
+		}
+		if(grid.getJeton(i,lastPlayedY).getIsUsed() && grid.getJeton(i,lastPlayedY).getIsHoled() == h) {
+			res++;
+		}
+		if(grid.getJeton(i,lastPlayedY).getIsUsed() && grid.getJeton(i,lastPlayedY).getIsBig() == b) {
+			res++;
 		}
 	}
-	else {
-		i = rand() % 16;
 
-		while(!jeu.selectJeton(i)) {
-			i = rand() % 16;
+	for(int i = 1; i < 4; i++) {
+		if(grid.getJeton(lastPlayedX,i).getIsUsed() && grid.getJeton(lastPlayedX,i).getIsRed() != r) {
+			res++;
 		}
-	}*/
+		if(grid.getJeton(lastPlayedX,i).getIsUsed() && grid.getJeton(lastPlayedX,i).getIsCircle() != c) {
+			res++;
+		}
+		if(grid.getJeton(lastPlayedX,i).getIsUsed() && grid.getJeton(lastPlayedX,i).getIsHoled() != h) {
+			res++;
+		}
+		if(grid.getJeton(lastPlayedX,i).getIsUsed() && grid.getJeton(lastPlayedX,i).getIsBig() != b) {
+			res++;
+		}
+	}
+
+	return res;
+}
+
+/* #
+   ###  */
+int Ia::win2(Grille grid) {
+	int res = 0;
+
+	int lastPlayedX = grid.getLastPlayedX();
+	int lastPlayedY = grid.getLastPlayedY();
+
+	//Place 1
+	// haut-gauche
+	if(lastPlayedX >= 2 && lastPlayedY >= 1) {
+		res += checkForme(grid, 0, -1, -1, -1, -2, -1);
+	}
+	// haut-droite
+	if(lastPlayedX <= 2 && lastPlayedY >= 2) {
+		res += checkForme(grid, 1, 0, 1, -1, 1, -2);
+	}
+	// bas-droite
+	if(lastPlayedX <= 1 && lastPlayedY <= 2) {
+		res += checkForme(grid, 0, 1, 1, 1, 2, 1);
+	}
+	// bas-gauche
+	if(lastPlayedX >= 1 && lastPlayedY <= 1) {
+		res += checkForme(grid, -1, 0, -1, 1, -1, 2);
+	}
+
+	//Place 2
+	// haut-gauche
+	if(lastPlayedX >= 2 && lastPlayedY <= 2) {
+		res += checkForme(grid, 0, 1, -1, 0, -2, 0);
+	}
+	// haut-droite
+	if(lastPlayedX >= 1 && lastPlayedY >= 2) {
+		res += checkForme(grid, -1, 0, 0, -1, 0, -2);
+	}
+	// bas-droite
+	if(lastPlayedX <= 1 && lastPlayedY >= 1) {
+		res += checkForme(grid, 0, -1, 1, 0, 2, 0);
+	}
+	// bas-gauche
+	if(lastPlayedX <= 2 && lastPlayedY <= 1) {
+		res += checkForme(grid, 1, 0, 0, 1, 0, 2);
+	}
+
+	//Place 3
+	// haut-gauche
+	if(lastPlayedX == 1 && lastPlayedX == 2 && lastPlayedY <= 2) {
+		res += checkForme(grid, -1, 0, 1, 0, 1, 1);
+	}
+	// haut-droite
+	if(lastPlayedX >= 1 && lastPlayedY == 1 && lastPlayedY == 2) {
+		res += checkForme(grid, 0, -1, 0, 1, -1, 1);
+	}
+	// bas-droite
+	if(lastPlayedX == 1 && lastPlayedX == 2 && lastPlayedY >= 1) {
+		res += checkForme(grid, 1, 0, -1, 0, -1, -1);
+	}
+	// bas-gauche
+	if(lastPlayedX <= 2 && lastPlayedY == 1 && lastPlayedY == 2) {
+		res += checkForme(grid, 0, 1, 0, -1, 1, -1);
+	}
+
+	//Place 4
+	// haut-gauche
+	if(lastPlayedX <= 1 && lastPlayedY <= 2) {
+		res += checkForme(grid, 1, 0, 2, 0, 2, 1);
+	}
+	// haut-droite
+	if(lastPlayedX >= 1 && lastPlayedY <= 1) {
+		res += checkForme(grid, 0, 1, 0, 2, -1, 2);
+	}
+	// bas-droite
+	if(lastPlayedX >= 2 && lastPlayedY >= 1) {
+		res += checkForme(grid, -1, 0, -2, 0, -2, -1);
+	}
+	// bas-gauche
+	if(lastPlayedX <= 2 && lastPlayedY >= 2) {
+		res += checkForme(grid, 0, -1, 0, -2, 1, -2);
+	}
+
+	return res;
+}
+
+/*   #
+   ### */
+int Ia::win3(Grille grid) {
+	int res = 0;
+
+	int lastPlayedX = grid.getLastPlayedX();
+	int lastPlayedY = grid.getLastPlayedY();
+
+	//Place 1
+	// haut-gauche
+	if(lastPlayedX >= 1 && lastPlayedY >= 2) {
+		res += checkForme(grid, -1, 0, -1, -1, -1, -2);
+	}
+	// haut-droite
+	if(lastPlayedX <= 1 && lastPlayedY >= 1) {
+		res += checkForme(grid, 0, -1, 1, -1, 2, -1);
+	}
+	// bas-droite
+	if(lastPlayedX <= 2 && lastPlayedY <= 1) {
+		res += checkForme(grid, 1, 0, 1, 1, 1, 2);
+	}
+	// bas-gauche
+	if(lastPlayedX >= 2 && lastPlayedY <= 2) {
+		res += checkForme(grid, 0, 1, -1, 1, -2, 1);
+	}
+
+	//Place 2
+	// haut-gauche
+	if(lastPlayedX <= 2 && lastPlayedY >= 2) {
+		res += checkForme(grid, 1, 0, 0, -1, 0, -2);
+	}
+	// haut-droite
+	if(lastPlayedX <= 1 && lastPlayedY <= 2) {
+		res += checkForme(grid, 0, 1, 1, 0, 2, 0);
+	}
+	// bas-droite
+	if(lastPlayedX >= 1 && lastPlayedY <= 1) {
+		res += checkForme(grid, -1, 0, 0, 1, 0, 2);
+	}
+	// bas-gauche
+	if(lastPlayedX >= 2 && lastPlayedY >= 1) {
+		res += checkForme(grid, 0, -1, -1, 0, -2, 0);
+	}
+
+	//Place 3
+	// haut-gauche
+	if(lastPlayedX <= 2 && lastPlayedY == 1 && lastPlayedY == 2) {
+		res += checkForme(grid, 0, -1, 0, 1, 1, 1);
+	}
+	// haut-droite
+	if(lastPlayedX == 1 && lastPlayedX == 2 && lastPlayedY <= 2) {
+		res += checkForme(grid, 1, 0, -1, 0, -1, 1);
+	}
+	// bas-droite
+	if(lastPlayedX >= 1 && lastPlayedY == 1 && lastPlayedY == 2) {
+		res += checkForme(grid, 0, 1, 0, -1, -1, -1);
+	}
+	// bas-gauche
+	if(lastPlayedX == 1 && lastPlayedX == 2 && lastPlayedY >= 1) {
+		res += checkForme(grid, -1, 0, 1, 0, 1, -1);
+	}
+
+	//Place 4
+	// haut-gauche
+	if(lastPlayedX <= 2 && lastPlayedY <= 1) {
+		res += checkForme(grid, 0, 1, 0, 2, 1, 2);
+	}
+	// haut-droite
+	if(lastPlayedX >= 2 && lastPlayedY <= 2) {
+		res += checkForme(grid, -1, 0, -2, 0, -2, 1);
+	}
+	// bas-droite
+	if(lastPlayedX >= 1 && lastPlayedY >= 2) {
+		res += checkForme(grid, 0, -1, 0, -2, -1, -2);
+	}
+	// bas-gauche
+	if(lastPlayedX <= 1 && lastPlayedY >= 1) {
+		res += checkForme(grid, 1, 0, 2, 0, 2, -1);
+	}
+
+	return res;
+}
+
+/* ##
+   ##  */
+int Ia::win4(Grille grid) {
+	int res = 0;
+
+	int lastPlayedX = grid.getLastPlayedX();
+	int lastPlayedY = grid.getLastPlayedY();
+
+	// haut-gauche
+	if(lastPlayedX >= 1 && lastPlayedY >= 1) {
+		res += checkForme(grid, -1, 0, 0, -1, -1, -1);
+	}
+	// haut-droite
+	if(lastPlayedX <= 2 && lastPlayedY >= 1) {
+		res += checkForme(grid, 1, 0, 0, -1, 1, -1);
+	}
+	// bas-droite
+	if(lastPlayedX <= 2 && lastPlayedY <= 2) {
+		res += checkForme(grid, 1, 0, 0, 1, 1, 1);
+	}
+	// bas-gauche
+	if(lastPlayedX >= 1 && lastPlayedY <= 2) {
+		res += checkForme(grid, -1, 0, 0, 1, -1, 1);
+	}
+
+	return res; 
+}
+
+/*  ##
+   ##  */
+int Ia::win5(Grille grid) {
+	int res = 0;
+
+	int lastPlayedX = grid.getLastPlayedX();
+	int lastPlayedY = grid.getLastPlayedY();
+
+	//Place 1
+	// haut-gauche
+	if(lastPlayedX >= 1 && lastPlayedY >= 2) {
+		res += checkForme(grid, 0, -1, -1, -1, -1, -2);
+	}
+	// haut-droite
+	if(lastPlayedX <= 1 && lastPlayedY >= 1) {
+		res += checkForme(grid, 1, 0, 1, -1, 2, -1);
+	}
+	// bas-droite
+	if(lastPlayedX <= 2 && lastPlayedY <= 1) {
+		res += checkForme(grid, 0, 1, 1, 1, 1, 2);
+	}
+	// bas-gauche
+	if(lastPlayedX >= 2 && lastPlayedY <= 2) {
+		res += checkForme(grid, -1, 0, -1, 1, -2, 1);
+	}
+
+	//Place 2
+	// haut-gauche
+	if(lastPlayedX >= 1 && lastPlayedY == 1 && lastPlayedY == 2) {
+		res += checkForme(grid, 0, 1, -1, 0, -1, -1);
+	}
+	// haut-droite
+	if(lastPlayedX == 1 && lastPlayedX == 2 && lastPlayedY >= 1) {
+		res += checkForme(grid, -1, 0, 0, -1, 1, -1);
+	}
+	// bas-droite
+	if(lastPlayedX <= 2 && lastPlayedY == 1 && lastPlayedY == 2) {
+		res += checkForme(grid, 0, -1, 1, 0, 1, 1);
+	}
+	// bas-gauche
+	if(lastPlayedX == 1 && lastPlayedX == 2 && lastPlayedY <= 2) {
+		res += checkForme(grid, 1, 0, 0, 1, -1, 1);
+	}
+
+	return res;
+}
+
+/*  #
+   ###  */
+int Ia::win6(Grille grid) {
+	int res = 0;
+
+	int lastPlayedX = grid.getLastPlayedX();
+	int lastPlayedY = grid.getLastPlayedY();
+
+	//Place 1
+	// haut-gauche
+	if(lastPlayedX == 1 && lastPlayedX == 2 && lastPlayedY <= 2) {
+		res += checkForme(grid, 0, 1, -1, 1, 1, 1);
+	}
+	// haut-droite
+	if(lastPlayedX >= 1 && lastPlayedY == 1 && lastPlayedY == 2) {
+		res += checkForme(grid, -1, 0, -1, -1, -1, 1);
+	}
+	// bas-droite
+	if(lastPlayedX == 1 && lastPlayedX == 2 && lastPlayedY >= 1) {
+		res += checkForme(grid, 0, -1, 1, -1, -1, -1);
+	}
+	// bas-gauche
+	if(lastPlayedX <= 2 && lastPlayedY == 1 && lastPlayedY == 2) {
+		res += checkForme(grid, 1, 0, 1, 1, 1, -1);
+	}
+
+	//Place 2
+	// haut-gauche
+	if(lastPlayedX == 1 && lastPlayedX == 2 && lastPlayedY >= 1) {
+		res += checkForme(grid, 0, -1, -1, 0, 1, 0);
+	}
+	// haut-droite
+	if(lastPlayedX <= 2 && lastPlayedY == 1 && lastPlayedY == 2) {
+		res += checkForme(grid, 1, 0, 0, -1, 0, 1);
+	}
+	// bas-droite
+	if(lastPlayedX == 1 && lastPlayedX == 2 && lastPlayedY <= 2) {
+		res += checkForme(grid, 0, 1, 1, 0, -1, 0);
+	}
+	// bas-gauche
+	if(lastPlayedX >= 1 && lastPlayedY == 1 && lastPlayedY == 2) {
+		res += checkForme(grid, -1, 0, 0, 1, 0, -1);
+	}
+
+	//Place 3
+	// haut-gauche
+	if(lastPlayedX <= 1 && lastPlayedY >= 1) {
+		res += checkForme(grid, 1, 0, 1, -1, 2, 0);
+	}
+	// haut-droite
+	if(lastPlayedX <= 2 && lastPlayedY <= 1) {
+		res += checkForme(grid, 0, 1, 1, 1, 0, 2);
+	}
+	// bas-droite
+	if(lastPlayedX >= 2 && lastPlayedY <= 2) {
+		res += checkForme(grid, -1, 0, -1, 1, -2, 0);
+	}
+	// bas-gauche
+	if(lastPlayedX >= 1 && lastPlayedY >= 2) {
+		res += checkForme(grid, 0, -1, -1, -1, 0, -2);
+	}
+
+	//Place 4
+	// haut-gauche
+	if(lastPlayedX >= 2 && lastPlayedY >= 1) {
+		res += checkForme(grid, -1, 0, -1, -1, -2, 0);
+	}
+	// haut-droite
+	if(lastPlayedX <= 2 && lastPlayedY >= 2) {
+		res += checkForme(grid, 0, -1, 1, -1, 0, -2);
+	}
+	// bas-droite
+	if(lastPlayedX <= 1 && lastPlayedY <= 2) {
+		res += checkForme(grid, 1, 0, 1, 1, 2, 0);
+	}
+	// bas-gauche
+	if(lastPlayedX >= 1 && lastPlayedY <= 1) {
+		res += checkForme(grid, 0, 1, -1, 1, 0, -2);
+	}
+
+	return res;
+}
+
+/* ##
+    ##  */
+int Ia::win7(Grille grid) {
+	int res = 0;
+
+	int lastPlayedX = grid.getLastPlayedX();
+	int lastPlayedY = grid.getLastPlayedY();
+
+	//Place 1
+	// haut-gauche
+	if(lastPlayedX >= 2 && lastPlayedY >= 1) {
+		res += checkForme(grid, -1, 0, -1, -1, -2, -1);
+	}
+	// haut-droite
+	if(lastPlayedX <= 2 && lastPlayedY >= 2) {
+		res += checkForme(grid, 0, -1, 1, -1, 1, -2);
+	}
+	// bas-droite
+	if(lastPlayedX <= 1 && lastPlayedY <= 2) {
+		res += checkForme(grid, 1, 0, 1, 1, 2, 1);
+	}
+	// bas-gauche
+	if(lastPlayedX >= 1 && lastPlayedY <= 1) {
+		res += checkForme(grid, 0, 1, -1, 1, -1, 2);
+	}
+
+	//Place 2
+	// haut-gauche
+	if(lastPlayedX == 1 && lastPlayedX == 2 && lastPlayedY >= 1) {
+		res += checkForme(grid, 1, 0, 0, -1, -1, -1);
+	}
+	// haut-droite
+	if(lastPlayedX <= 2 && lastPlayedY == 1 && lastPlayedY == 2) {
+		res += checkForme(grid, 0, -1, 1, 0, 1, 1);
+	}
+	// bas-droite
+	if(lastPlayedX == 1 && lastPlayedX == 2 && lastPlayedY <= 2) {
+		res += checkForme(grid, -1, 0, 0, 1, 1, 1);
+	}
+	// bas-gauche
+	if(lastPlayedX >= 1 && lastPlayedY == 1 && lastPlayedY == 2) {
+		res += checkForme(grid, 0, -1, -1, 0, -1, 1);
+	}
+
+	return res;
+}
+
+int Ia::checkForme(Grille grid, int x1, int y1, int x2, int y2, int x3, int y3) {
+	int res = 0;
+	bool quit = false;
+	Jeton carre[3];
+	int lastPlayedX = grid.getLastPlayedX();
+	int lastPlayedY = grid.getLastPlayedY();
+
+	bool r = grid.getJeton(lastPlayedX,lastPlayedY).getIsRed();
+	bool c = grid.getJeton(lastPlayedX,lastPlayedY).getIsCircle();
+	bool h = grid.getJeton(lastPlayedX,lastPlayedY).getIsHoled();
+	bool b = grid.getJeton(lastPlayedX,lastPlayedY).getIsBig();
+
+	carre[0] = grid.getJeton(lastPlayedX+x1,lastPlayedY+y1);
+	carre[1] = grid.getJeton(lastPlayedX+x2,lastPlayedY+y2);
+	carre[2] = grid.getJeton(lastPlayedX+x3,lastPlayedY+y3);
+
+	for(int i = 0; i < 3 && !quit; i++) {
+		if(carre[i].getIsUsed()) {
+			if(carre[i].getIsUsed() && carre[i].getIsRed() == r) {
+				res++;
+			}
+			if(carre[i].getIsUsed() && carre[i].getIsCircle() == c) {
+				res++;
+			}
+			if(carre[i].getIsUsed() && carre[i].getIsHoled() == h) {
+				res++;
+			}
+			if(carre[i].getIsUsed() && carre[i].getIsBig() == b) {
+				res++;
+			}
+		}
+	}
+
+	return res;
 }
