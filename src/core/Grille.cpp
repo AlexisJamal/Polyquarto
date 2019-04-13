@@ -12,7 +12,26 @@ Grille::Grille () {
 
 }
 
+Grille::Grille(Grille const & grille) {
+	for(int i = 0; i < 4; i++)
+		for(int j = 0; j < 4; j++) {
+			grid[i][j] = Jeton(grille.getJeton(i,j));
+			gridWin[i][j] = grille.getWin(i,j);
+		}
+
+	lastPlayedY = grille.getLastPlayedY();
+	lastPlayedX = grille.getLastPlayedX();
+}
+
 Grille::~Grille() {
+}
+
+int Grille::getLastPlayedX() const {
+	return lastPlayedX;
+}
+
+int Grille::getLastPlayedY() const {
+	return lastPlayedY;
 }
 
 void Grille::setJeton(int x, int y, Jeton j) {
@@ -21,11 +40,15 @@ void Grille::setJeton(int x, int y, Jeton j) {
 	lastPlayedY = y;
 }
 
-Jeton Grille::getJeton(int x, int y) {
+Jeton Grille::getJeton(int x, int y) const {
 	return grid[x][y];
 }
 
-bool Grille::getWin(int x, int y) {
+Jeton* Grille::getRefJeton(int x, int y) {
+	return &grid[x][y];
+}
+
+bool Grille::getWin(int x, int y) const {
 	return gridWin[x][y];
 }
 

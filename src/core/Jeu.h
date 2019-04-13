@@ -14,7 +14,7 @@ class Jeu {
 
 private :
 	
-	vector<Jeton> jetons;
+	vector<Jeton*> jetons;
 	bool jetonSelected;
 	Grille grid;
 	int winningCondition;
@@ -27,11 +27,13 @@ public :
 
 	Jeu();
 
+	Jeu(Jeu const & jeu);
+
 	~Jeu();
 
-	Jeton getJeton(int index);
+	Jeton getJeton(int index) const;
 
-	Grille getGrid();
+	Grille getGrid() const;
 
 	bool selectJeton(int index);
 
@@ -39,21 +41,23 @@ public :
 
 	int getSelected();
 
-	bool getJetonSelected();
+	bool getJetonSelected() const;
 
-	int getWinningCondition();
+	int getWinningCondition() const;
 
 	void setWinningCondition(int wc);
 
-	State getState();
+	State getState() const;
 
 	void setState(State s);
 
-	Mode getMode();
+	Mode getMode() const;
 
 	void setMode(Mode m);
 
-	int getJoueur();
+	int getJoueur() const;
+
+	int getCountPose() const;
 
 };
 

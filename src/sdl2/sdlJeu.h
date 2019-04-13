@@ -58,7 +58,7 @@ public :
 
     sdlJeu ();
     ~sdlJeu ();
-    int getJetonImgIndex(Jeton j);
+    int getJetonImgIndex(Jeton* j);
     void mouseToGrid(int mouseX, int mouseY, int &x, int &y);
     void mouseToJetonIndex(int mouseX, int mouseY, int &index);
     void sdlBoucle();

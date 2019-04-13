@@ -212,14 +212,14 @@ void sdlJeu::drawPlaying() {
             if(j.getIsSelected()) {
                 im_select.draw(renderer, 400 + (i%4) * 98, 100 + (i/4) * 73 , 100, 75);
             }
-            jetons[getJetonImgIndex(j)].draw(renderer, 425 + (i%4) * 98, 115 + (i/4) * 73 , 50, 50);
+            jetons[getJetonImgIndex(&j)].draw(renderer, 425 + (i%4) * 98, 115 + (i/4) * 73 , 50, 50);
         }
     }
     Grille grid = jeu.getGrid();
     for(int i = 0; i < 4; i++) {
         for(int j = 0; j < 4; j++) {
             if(grid.getJeton(i, j).getIsUsed()) {
-                jetons[getJetonImgIndex(grid.getJeton(i, j))].draw(renderer, 15 + i * 98, 15 + j * 98 , 70, 70);
+                jetons[getJetonImgIndex(grid.getRefJeton(i, j))].draw(renderer, 15 + i * 98, 15 + j * 98 , 70, 70);
             }
         }
     }
@@ -246,7 +246,7 @@ void sdlJeu::drawWon() {
     for(int i = 0; i < 4; i++) {
         for(int j = 0; j < 4; j++) {
             if(grid.getJeton(i, j).getIsUsed() && grid.getWin(i, j)) {
-                jetons[getJetonImgIndex(grid.getJeton(i, j))].draw(renderer, 15 + i * 98, 15 + j * 98 , 70, 70);
+                jetons[getJetonImgIndex(grid.getRefJeton(i, j))].draw(renderer, 15 + i * 98, 15 + j * 98 , 70, 70);
             }
         }
     }
@@ -270,20 +270,20 @@ void sdlJeu::drawEgalite() {
     Grille grid = jeu.getGrid();
     for(int i = 0; i < 4; i++) {
         for(int j = 0; j < 4; j++) {
-            jetons[getJetonImgIndex(grid.getJeton(i, j))].draw(renderer, 15 + i * 98, 15 + j * 98 , 70, 70);
+            jetons[getJetonImgIndex(grid.getRefJeton(i, j))].draw(renderer, 15 + i * 98, 15 + j * 98 , 70, 70);
         }
     }
     im_egalite.draw(renderer,400,0,400,400);
 }
 
-int sdlJeu::getJetonImgIndex(Jeton j) {
+int sdlJeu::getJetonImgIndex(Jeton* j) {
     int res = 0;
     bool c, h, b;
-    c = j.getIsCircle();
-    h = j.getIsHoled();
-    b = j.getIsBig();
+    c = j->getIsCircle();
+    h = j->getIsHoled();
+    b = j->getIsBig();
 
-    if(j.getIsRed()) {
+    if(j->getIsRed()) {
         res = -1;
     }
     else {

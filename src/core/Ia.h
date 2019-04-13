@@ -12,6 +12,8 @@ private :
 public :
 
 	static void jouer(Jeu & j);
+	static int evaluation (Jeu & jeu);
+	static int MinMax (Jeu & jeu , int profondeur, bool opposant);
 
 };
 
