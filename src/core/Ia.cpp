@@ -45,105 +45,128 @@ int Ia::evaluation (Jeu & jeu){
 
 int Ia::MinMax (Jeu & jeu , int profondeur, bool opposant){
 	int valeur;
-	Jeu * jeutmp = new Jeu(jeu);
 	if (profondeur == 0 || jeu.getState() == won || jeu.getState() == egalite){
 		return evaluation(jeu);
 	}
 	if (opposant){
-		valeur = 9999;
-		int actu;
-		for(int k = 0; k< 16; k++){
-			if(jeutmp->selectJeton(k)){
-				cout<<"on choisit un jeton aleatoire(ia)"<<std::endl;
-				for(int i = 0; i < 4; i++){
-					for(int j = 0; j<4; j++){
-						if (jeutmp->getGrid().getJeton(i,j).getIsUsed() == false){
-							jeutmp->poseJeton(i,j);
-							cout<<"on pose un jeton sur copie jeu(j)"<<std::endl;
-							for(int m = 0; m< 16; m++){
-								if(jeutmp->selectJeton(m)){
-									std::cout<<"on choisit un jeton aleatoire(j)"<<std::endl;
-									actu = -MinMax(*jeutmp, profondeur-1, false);
-									cout<<"le minmax passe"<<std::endl;
-									if (valeur < actu){
-										valeur = actu;
-										cout<<"la valeur a été changée (j)"<<std::endl;
-									}
-								}
+		valeur = -9999;
+		for(int i = 0; i < 4; i++){
+			for(int j = 0; j<4; j++){
+				Jeu * jeutmp = new Jeu(jeu);
+				if (jeutmp->poseJeton(i,j)){
+					cout<<"on pose un jeton sur copie jeu(j)"<<endl;
+					for(int k = 0; k< 16; k++){
+						if(jeutmp->selectJeton(k)){
+							cout<<"on choisit un jeton aleatoire(ia)"<<endl;
+							int actu = -MinMax(*jeutmp,profondeur-1,false);
+							cout<<"on obtient une valeur"<<endl;	
+							if (valeur < actu){
+								valeur = actu;
+								cout<<"la valeur a été changée (j)"<<endl;
 							}
 						}
 					}
 				}
 			}
 		}
-		return valeur;
 	}
 	else{
-		valeur = -9999;
-		int actu;
-		for(int i = 0; i < 4; i++){
-			for(int j = 0; j<4; j++){
-				if (jeutmp->getGrid().getJeton(i,j).getIsUsed() == false){
-					jeutmp->poseJeton(i,j);
-					cout<<"on pose un jeton sur copie jeu(ia)"<<std::endl;
-					actu = MinMax(*jeutmp, profondeur-1, true);
-					if (valeur < actu){
-						valeur = actu;
-						cout<<"la valeur a été changée (ia)"<<std::endl;
+		valeur = 9999;
+		for(int l = 0; l < 4; l++){
+			for(int m = 0; m<4; m++){
+				Jeu * jeutmp = new Jeu(jeu);
+				if (jeutmp->poseJeton(l,m)){
+					cout<<"on a pose un jeton sur copie jeu(ia)"<<endl;
+					for(int c = 0; c< 16; c++){
+						if(jeutmp->selectJeton(c)){
+							cout<<"on choisi un jeton aleatoire (j)"<<endl;
+							int actu = MinMax(*jeutmp, profondeur-1, true);
+							if (valeur > actu){
+								valeur = actu;
+								cout<<"la valeur a été changée (ia)"<<endl;
+							}
+						}
 					}
 				}
 			}
 		}
-		
-		return valeur;
 	}
+	cout<<"on s'apprête à donner la valeur trouvée"<<endl;
+	return valeur;
 }
 
 
 void Ia::jouer(Jeu & jeu) {
 	srand (time(NULL));
 	Jeu * jeutmp = new Jeu(jeu);
-	int profondeur = 3;
+	int profondeur = 2;
 	int maximum = -9999;
 	int maximumJeton = -9999;
-	int actu,maxx,maxy,maxjet,actujet;
+	int maxx,maxy,maxjet,actujet;
 	maxx=0;
 	maxy=0;
 	if ( jeu.getJoueur() == 1){
 		for(int i=0; i<4; i++){
 			for(int j=0; j<4; j++){
-				if (jeutmp->getGrid().getJeton(i,j).getIsUsed() == false){
-					jeutmp->poseJeton(i,j);
-					cout<<"pose premier jeton"<<std::endl;
-					actu = MinMax(*jeutmp,profondeur-1,true);
-					cout<<"premier minmax effectué"<<std::endl;
+				Jeu * jeutmp = new Jeu(jeu);
+				if (jeutmp->poseJeton(i,j)){
+					int actu = MinMax(*jeutmp,profondeur-1,false);
+					cout<<"minmax effectué"<<endl;
 					if (actu > maximum){
+						cout<<"on entre dans la condition"<<endl;
 						maximum=actu;
 						maxx=i;
 						maxy=j;
+						cout<<"fin de la condition"<<endl;
 					}
 					
 				}
 			}
 		}
+		cout<<"On va poser le jeton sur la grille"<<endl;
 		jeu.poseJeton(maxx,maxy);
-		cout<<"Jeton posé sur la grille"<<std::endl;
+		cout<<"Jeton posé sur la grille"<<endl;
 	}
 	else{
-		for(int k = 0; k< 16; k++){
+		/*for(int k = 0; k< 16; k++){
 			if(jeutmp->selectJeton(k)){
-				actujet = MinMax(*jeutmp,profondeur-1,false);
+				cout<<"L'ia a sélectionner un jeton random"<<endl;
+				actujet = -MinMax(*jeutmp,profondeur-1,false);
+				cout<<"Minmax effectué"<<endl;
 				if (actujet > maximumJeton){
+					cout<<"On rentre dans la condition"<<endl;
 					maxjet = actujet;
+					cout<<"Jeton preselectionne changé"<<endl;
 				}
 			}
 		}
 		jeu.selectJeton(maxjet);
+		
+		cout<<"Jeton selectionné"<<endl;*/
+		int jet = rand() % 16;
+		while(!jeu.selectJeton(jet)){
+			jet =  rand() % 16;
+		}
 	}
-	
-}
+	/*int x, y, i;
 
-//  ####
+	if(jeu.getJoueur() == 1) {
+		x = rand() % 4;
+		y = rand() % 4;
+
+		while(!jeu.poseJeton(x,y)) {
+			x = rand() % 4;
+			y = rand() % 4;
+		}
+	}
+	else {
+		i = rand() % 16;
+
+		while(!jeu.selectJeton(i)) {
+			i = rand() % 16;
+		}
+	}*/
+}
 int Ia::win1(Grille grid) {
 	int res = 0;
 
