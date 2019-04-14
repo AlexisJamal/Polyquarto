@@ -1,4 +1,4 @@
-#Prérequis
+#Polyquarto
 
 ##Installer SDL2
     
