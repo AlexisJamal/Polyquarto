@@ -136,7 +136,7 @@ void Ia::jouer(Jeu & jeu) {
 				cout<<"L'ia a sélectionner un jeton random"<<endl;
 				actujet = -MinMax(jeutmp,profondeur-1,true);
 				cout<<"Minmax effectué"<<endl;
-				if (actujet > maximumJeton){
+				if (actujet > maximumJeton && jeutmp->selectJeton(actujet)){
 					cout<<"On rentre dans la condition"<<endl;
 					maxjet = actujet;
 					cout<<"Jeton preselectionne changé"<<endl;
@@ -144,9 +144,7 @@ void Ia::jouer(Jeu & jeu) {
 			}
 		}
 		cout << "maxjet " << maxjet << endl;
-		while(!jeu.selectJeton(maxjet)) {
-			maxjet = rand() % 16;
-		}
+		jeu.selectJeton(maxjet);
 		
 		cout<<"Jeton selectionné"<<endl;
 	}
@@ -242,19 +240,19 @@ int Ia::win2(Grille grid) {
 
 	//Place 3
 	// haut-gauche
-	if(lastPlayedX == 1 && lastPlayedX == 2 && lastPlayedY <= 2) {
+	if(lastPlayedX >= 1 && lastPlayedX <= 2 && lastPlayedY <= 2) {
 		res += checkForme(grid, -1, 0, 1, 0, 1, 1);
 	}
 	// haut-droite
-	if(lastPlayedX >= 1 && lastPlayedY == 1 && lastPlayedY == 2) {
+	if(lastPlayedX >= 1 && lastPlayedY >= 1 && lastPlayedY <= 2) {
 		res += checkForme(grid, 0, -1, 0, 1, -1, 1);
 	}
 	// bas-droite
-	if(lastPlayedX == 1 && lastPlayedX == 2 && lastPlayedY >= 1) {
+	if(lastPlayedX >= 1 && lastPlayedX <= 2 && lastPlayedY >= 1) {
 		res += checkForme(grid, 1, 0, -1, 0, -1, -1);
 	}
 	// bas-gauche
-	if(lastPlayedX <= 2 && lastPlayedY == 1 && lastPlayedY == 2) {
+	if(lastPlayedX <= 2 && lastPlayedY >= 1 && lastPlayedY <= 2) {
 		res += checkForme(grid, 0, 1, 0, -1, 1, -1);
 	}
 
@@ -325,19 +323,19 @@ int Ia::win3(Grille grid) {
 
 	//Place 3
 	// haut-gauche
-	if(lastPlayedX <= 2 && lastPlayedY == 1 && lastPlayedY == 2) {
+	if(lastPlayedX <= 2 && lastPlayedY >= 1 && lastPlayedY <= 2) {
 		res += checkForme(grid, 0, -1, 0, 1, 1, 1);
 	}
 	// haut-droite
-	if(lastPlayedX == 1 && lastPlayedX == 2 && lastPlayedY <= 2) {
+	if(lastPlayedX >= 1 && lastPlayedX <= 2 && lastPlayedY <= 2) {
 		res += checkForme(grid, 1, 0, -1, 0, -1, 1);
 	}
 	// bas-droite
-	if(lastPlayedX >= 1 && lastPlayedY == 1 && lastPlayedY == 2) {
+	if(lastPlayedX >= 1 && lastPlayedY >= 1 && lastPlayedY <= 2) {
 		res += checkForme(grid, 0, 1, 0, -1, -1, -1);
 	}
 	// bas-gauche
-	if(lastPlayedX == 1 && lastPlayedX == 2 && lastPlayedY >= 1) {
+	if(lastPlayedX >= 1 && lastPlayedX <= 2 && lastPlayedY >= 1) {
 		res += checkForme(grid, -1, 0, 1, 0, 1, -1);
 	}
 
@@ -418,19 +416,19 @@ int Ia::win5(Grille grid) {
 
 	//Place 2
 	// haut-gauche
-	if(lastPlayedX >= 1 && lastPlayedY == 1 && lastPlayedY == 2) {
+	if(lastPlayedX >= 1 && lastPlayedY >= 1 && lastPlayedY <= 2) {
 		res += checkForme(grid, 0, 1, -1, 0, -1, -1);
 	}
 	// haut-droite
-	if(lastPlayedX == 1 && lastPlayedX == 2 && lastPlayedY >= 1) {
+	if(lastPlayedX >= 1 && lastPlayedX <= 2 && lastPlayedY >= 1) {
 		res += checkForme(grid, -1, 0, 0, -1, 1, -1);
 	}
 	// bas-droite
-	if(lastPlayedX <= 2 && lastPlayedY == 1 && lastPlayedY == 2) {
+	if(lastPlayedX <= 2 && lastPlayedY >= 1 && lastPlayedY <= 2) {
 		res += checkForme(grid, 0, -1, 1, 0, 1, 1);
 	}
 	// bas-gauche
-	if(lastPlayedX == 1 && lastPlayedX == 2 && lastPlayedY <= 2) {
+	if(lastPlayedX >= 1 && lastPlayedX <= 2 && lastPlayedY <= 2) {
 		res += checkForme(grid, 1, 0, 0, 1, -1, 1);
 	}
 
@@ -447,37 +445,37 @@ int Ia::win6(Grille grid) {
 
 	//Place 1
 	// haut-gauche
-	if(lastPlayedX == 1 && lastPlayedX == 2 && lastPlayedY <= 2) {
+	if(lastPlayedX >= 1 && lastPlayedX <= 2 && lastPlayedY <= 2) {
 		res += checkForme(grid, 0, 1, -1, 1, 1, 1);
 	}
 	// haut-droite
-	if(lastPlayedX >= 1 && lastPlayedY == 1 && lastPlayedY == 2) {
+	if(lastPlayedX >= 1 && lastPlayedY >= 1 && lastPlayedY <= 2) {
 		res += checkForme(grid, -1, 0, -1, -1, -1, 1);
 	}
 	// bas-droite
-	if(lastPlayedX == 1 && lastPlayedX == 2 && lastPlayedY >= 1) {
+	if(lastPlayedX >= 1 && lastPlayedX <= 2 && lastPlayedY >= 1) {
 		res += checkForme(grid, 0, -1, 1, -1, -1, -1);
 	}
 	// bas-gauche
-	if(lastPlayedX <= 2 && lastPlayedY == 1 && lastPlayedY == 2) {
+	if(lastPlayedX <= 2 && lastPlayedY >= 1 && lastPlayedY <= 2) {
 		res += checkForme(grid, 1, 0, 1, 1, 1, -1);
 	}
 
 	//Place 2
 	// haut-gauche
-	if(lastPlayedX == 1 && lastPlayedX == 2 && lastPlayedY >= 1) {
+	if(lastPlayedX >= 1 && lastPlayedX <= 2 && lastPlayedY >= 1) {
 		res += checkForme(grid, 0, -1, -1, 0, 1, 0);
 	}
 	// haut-droite
-	if(lastPlayedX <= 2 && lastPlayedY == 1 && lastPlayedY == 2) {
+	if(lastPlayedX <= 2 && lastPlayedY >= 1 && lastPlayedY <= 2) {
 		res += checkForme(grid, 1, 0, 0, -1, 0, 1);
 	}
 	// bas-droite
-	if(lastPlayedX == 1 && lastPlayedX == 2 && lastPlayedY <= 2) {
+	if(lastPlayedX >= 1 && lastPlayedX <= 2 && lastPlayedY <= 2) {
 		res += checkForme(grid, 0, 1, 1, 0, -1, 0);
 	}
 	// bas-gauche
-	if(lastPlayedX >= 1 && lastPlayedY == 1 && lastPlayedY == 2) {
+	if(lastPlayedX >= 1 && lastPlayedY >= 1 && lastPlayedY <= 2) {
 		res += checkForme(grid, -1, 0, 0, 1, 0, -1);
 	}
 
@@ -548,19 +546,19 @@ int Ia::win7(Grille grid) {
 
 	//Place 2
 	// haut-gauche
-	if(lastPlayedX == 1 && lastPlayedX == 2 && lastPlayedY >= 1) {
+	if(lastPlayedX >= 1 && lastPlayedX <= 2 && lastPlayedY >= 1) {
 		res += checkForme(grid, 1, 0, 0, -1, -1, -1);
 	}
 	// haut-droite
-	if(lastPlayedX <= 2 && lastPlayedY == 1 && lastPlayedY == 2) {
+	if(lastPlayedX <= 2 && lastPlayedY >= 1 && lastPlayedY <= 2) {
 		res += checkForme(grid, 0, -1, 1, 0, 1, 1);
 	}
 	// bas-droite
-	if(lastPlayedX == 1 && lastPlayedX == 2 && lastPlayedY <= 2) {
+	if(lastPlayedX >= 1 && lastPlayedX <= 2 && lastPlayedY <= 2) {
 		res += checkForme(grid, -1, 0, 0, 1, 1, 1);
 	}
 	// bas-gauche
-	if(lastPlayedX >= 1 && lastPlayedY == 1 && lastPlayedY == 2) {
+	if(lastPlayedX >= 1 && lastPlayedY >= 1 && lastPlayedY <= 2) {
 		res += checkForme(grid, 0, -1, -1, 0, -1, 1);
 	}
 
