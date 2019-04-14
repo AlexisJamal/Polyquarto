@@ -10,7 +10,7 @@ int Ia::evaluation (Jeu & jeu){
 
 	Grille grid = jeu.getGrid();
 
-	if (grid.hasWon(1)){
+	if (grid.hasWon(jeu.getWinningCondition())){
 		res = 100;
 	}
 	else {
@@ -136,9 +136,9 @@ void Ia::jouer(Jeu & jeu) {
 				cout<<"L'ia a sélectionner un jeton random"<<endl;
 				actujet = -MinMax(jeutmp,profondeur-1,true);
 				cout<<"Minmax effectué"<<endl;
-				if (actujet > maximumJeton && jeutmp->selectJeton(actujet)){
+				if (actujet > maximumJeton){
 					cout<<"On rentre dans la condition"<<endl;
-					maxjet = actujet;
+					maxjet = k;
 					cout<<"Jeton preselectionne changé"<<endl;
 				}
 			}
