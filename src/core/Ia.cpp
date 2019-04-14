@@ -45,25 +45,21 @@ int Ia::evaluation (Jeu & jeu){
 
 int Ia::MinMax (Jeu* jeu , int profondeur, bool opposant){
 	int valeur;
+	Jeu * jeutmp = new Jeu(*jeu);
 	if (profondeur == 0 || jeu->getState() == won || jeu->getState() == egalite){
-		cout << "Fin de l'arbe" << endl;
-		return evaluation(*jeu);
+		valeur = evaluation(*jeu);
 	}
-	if (opposant){
-		valeur = -9999;
+	else if (opposant){
+		valeur = 9999;
 		for(int i = 0; i < 4; i++){
 			for(int j = 0; j<4; j++){
-				Jeu * jeutmp = new Jeu(*jeu);
+				jeutmp = new Jeu(*jeu);
 				if (jeutmp->poseJeton(i,j)){
-					cout<<"on pose un jeton sur copie jeu(j)"<<endl;
 					for(int k = 0; k< 16; k++){
 						if(jeutmp->selectJeton(k)){
-							cout<<"on choisit un jeton aleatoire(ia)"<<endl;
 							int actu = -MinMax(jeutmp,profondeur-1,false);
-							cout<<"on obtient une valeur"<<endl;	
-							if (valeur < actu){
+							if (valeur > actu){
 								valeur = actu;
-								cout<<"la valeur a été changée (j)"<<endl;
 							}
 						}
 					}
@@ -75,17 +71,14 @@ int Ia::MinMax (Jeu* jeu , int profondeur, bool opposant){
 		valeur = 9999;
 		for(int l = 0; l < 4; l++){
 			for(int m = 0; m<4; m++){
-				Jeu * jeutmp = new Jeu(*jeu);
-				cout << "pose jeton" << endl;
+				jeutmp = new Jeu(*jeu);
+				cout << endl;
 				if (jeutmp->poseJeton(l,m)){
-					cout<<"on a pose un jeton sur copie jeu(ia)"<<endl;
 					for(int c = 0; c< 16; c++){
 						if(jeutmp->selectJeton(c)){
-							cout<<"on choisi un jeton aleatoire (j)"<<endl;
 							int actu = MinMax(jeutmp, profondeur-1, true);
 							if (valeur > actu){
 								valeur = actu;
-								cout<<"la valeur a été changée (ia)"<<endl;
 							}
 						}
 					}
@@ -93,7 +86,6 @@ int Ia::MinMax (Jeu* jeu , int profondeur, bool opposant){
 			}
 		}
 	}
-	cout<<"on s'apprête à donner la valeur trouvée"<<endl;
 	return valeur;
 }
 
@@ -113,40 +105,29 @@ void Ia::jouer(Jeu & jeu) {
 				jeutmp = new Jeu(jeu);
 				if (jeutmp->poseJeton(i,j)){
 					int actu = MinMax(jeutmp,profondeur-1,false);
-					cout<<"minmax effectué"<<endl;
 					if (actu > maximum){
-						cout<<"on entre dans la condition"<<endl;
 						maximum=actu;
 						maxx=i;
 						maxy=j;
-						cout<<"fin de la condition"<<endl;
 					}
 					
 				}
 			}
 		}
-		cout<<"On va poser le jeton sur la grille"<<endl;
 		jeu.poseJeton(maxx,maxy);
-		cout<<"Jeton posé sur la grille"<<endl;
 	}
 	else{
 		for(int k = 0; k< 16; k++){
 			jeutmp = new Jeu(jeu);
 			if(jeutmp->selectJeton(k)){
-				cout<<"L'ia a sélectionner un jeton random"<<endl;
-				actujet = -MinMax(jeutmp,profondeur-1,true);
-				cout<<"Minmax effectué"<<endl;
+				actujet = MinMax(jeutmp,profondeur-1,true);
 				if (actujet > maximumJeton){
-					cout<<"On rentre dans la condition"<<endl;
 					maxjet = k;
-					cout<<"Jeton preselectionne changé"<<endl;
+					maximumJeton = actujet;
 				}
 			}
 		}
-		cout << "maxjet " << maxjet << endl;
 		jeu.selectJeton(maxjet);
-		
-		cout<<"Jeton selectionné"<<endl;
 	}
 }
 
@@ -165,7 +146,7 @@ int Ia::win1(Grille grid) {
 		if(grid.getJeton(i,lastPlayedY).getIsUsed() && grid.getJeton(i,lastPlayedY).getIsRed() == r) {
 			res++;
 		}
-			if(grid.getJeton(i,lastPlayedY).getIsUsed() && grid.getJeton(i,lastPlayedY).getIsCircle() == c) {
+		if(grid.getJeton(i,lastPlayedY).getIsUsed() && grid.getJeton(i,lastPlayedY).getIsCircle() == c) {
 			res++;
 		}
 		if(grid.getJeton(i,lastPlayedY).getIsUsed() && grid.getJeton(i,lastPlayedY).getIsHoled() == h) {
@@ -177,16 +158,16 @@ int Ia::win1(Grille grid) {
 	}
 
 	for(int i = 1; i < 4; i++) {
-		if(grid.getJeton(lastPlayedX,i).getIsUsed() && grid.getJeton(lastPlayedX,i).getIsRed() != r) {
+		if(grid.getJeton(lastPlayedX,i).getIsUsed() && grid.getJeton(lastPlayedX,i).getIsRed() == r) {
 			res++;
 		}
-		if(grid.getJeton(lastPlayedX,i).getIsUsed() && grid.getJeton(lastPlayedX,i).getIsCircle() != c) {
+		if(grid.getJeton(lastPlayedX,i).getIsUsed() && grid.getJeton(lastPlayedX,i).getIsCircle() == c) {
 			res++;
 		}
-		if(grid.getJeton(lastPlayedX,i).getIsUsed() && grid.getJeton(lastPlayedX,i).getIsHoled() != h) {
+		if(grid.getJeton(lastPlayedX,i).getIsUsed() && grid.getJeton(lastPlayedX,i).getIsHoled() == h) {
 			res++;
 		}
-		if(grid.getJeton(lastPlayedX,i).getIsUsed() && grid.getJeton(lastPlayedX,i).getIsBig() != b) {
+		if(grid.getJeton(lastPlayedX,i).getIsUsed() && grid.getJeton(lastPlayedX,i).getIsBig() == b) {
 			res++;
 		}
 	}
