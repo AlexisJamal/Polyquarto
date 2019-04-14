@@ -45,7 +45,7 @@ int Ia::evaluation (Jeu & jeu){
 
 int Ia::MinMax (Jeu* jeu , int profondeur, bool opposant){
 	int valeur;
-	Jeu * jeutmp = new Jeu(*jeu);
+	Jeu * jeutmp = nullptr;
 	if (profondeur == 0 || jeu->getState() == won || jeu->getState() == egalite){
 		valeur = evaluation(*jeu);
 	}
@@ -54,10 +54,12 @@ int Ia::MinMax (Jeu* jeu , int profondeur, bool opposant){
 		for(int i = 0; i < 4; i++){
 			for(int j = 0; j<4; j++){
 				jeutmp = new Jeu(*jeu);
+				cout << "Ia select jeton" << endl;
 				if (jeutmp->poseJeton(i,j)){
 					for(int k = 0; k< 16; k++){
 						if(jeutmp->selectJeton(k)){
 							int actu = -MinMax(jeutmp,profondeur-1,false);
+							cout << actu << endl;
 							if (valeur > actu){
 								valeur = actu;
 							}
@@ -72,11 +74,12 @@ int Ia::MinMax (Jeu* jeu , int profondeur, bool opposant){
 		for(int l = 0; l < 4; l++){
 			for(int m = 0; m<4; m++){
 				jeutmp = new Jeu(*jeu);
-				cout << endl;
+				cout << "Ia pose jeton" << endl;
 				if (jeutmp->poseJeton(l,m)){
 					for(int c = 0; c< 16; c++){
 						if(jeutmp->selectJeton(c)){
 							int actu = MinMax(jeutmp, profondeur-1, true);
+							cout << actu << endl;
 							if (valeur > actu){
 								valeur = actu;
 							}
@@ -92,7 +95,7 @@ int Ia::MinMax (Jeu* jeu , int profondeur, bool opposant){
 
 void Ia::jouer(Jeu & jeu) {
 	srand (time(NULL));
-	Jeu * jeutmp = new Jeu(jeu);
+	Jeu * jeutmp = nullptr;
 	int profondeur = 2;
 	int maximum = -9999;
 	int maximumJeton = -9999;
