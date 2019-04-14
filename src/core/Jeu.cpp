@@ -101,7 +101,7 @@ bool Jeu::poseJeton(int x, int y) {
 int Jeu::getSelected() {
 	bool quit = false;
 	int res;
-	for(int i = 0; i < jetons.size(); i++ && !quit) {
+	for(unsigned int i = 0; i < jetons.size(); i++ && !quit) {
 		if(jetons[i]->getIsSelected()) {
 			res = i;
 			quit = true;
