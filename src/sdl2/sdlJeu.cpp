@@ -419,7 +419,7 @@ void sdlJeu::eventPlaying(int mouseX, int mouseY) {
 		            Ia::jouer(jeu);
 		            sdlAff();
 		            SDL_RenderPresent(renderer);
-		            Ia::jouer(jeu);
+		            if(jeu.getState() == playing) Ia::jouer(jeu);
 		            sdlAff();
 		            SDL_RenderPresent(renderer);
 		        }
